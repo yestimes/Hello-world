@@ -14,12 +14,12 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-//Íê³É£¬²éÕÒÓÃ»§Ãû
+//å®Œæˆï¼ŒæŸ¥æ‰¾ç”¨æˆ·å
 int find_userName_in_user(user *source, user **return_user, char *aim_str, int *bool_out)
 {
 	int ret = 0;
 	user *p = source;
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (source == NULL){
 		ret = -1;
 		printf(" user information is NULL \n");
@@ -42,12 +42,12 @@ int find_userName_in_user(user *source, user **return_user, char *aim_str, int *
 	*bool_out = 0;
 	return ret;
 }
-//Íê³É£¬Ğ£ÑéÃÜÂë
+//å®Œæˆï¼Œæ ¡éªŒå¯†ç 
 int check_passWord_in_user(user *source, char *aim_str, int *bool_out)
 {
 	int ret = 0;
 	user *p = source;
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (source == NULL){
 		ret = -1;
 		printf(" user information is NULL \n");
@@ -73,7 +73,7 @@ int check_passWord_in_user(user *source, char *aim_str, int *bool_out)
 		}*/
 	return ret;
 }
-//Íê³É£¬´´½¨ÓÃ»§ĞÅÏ¢Í·
+//å®Œæˆï¼Œåˆ›å»ºç”¨æˆ·ä¿¡æ¯å¤´
 int set_user_head(user **head, char *user_str, char *passwd_str, int *result)
 {
 	int ret = 0;
@@ -91,12 +91,12 @@ int set_user_head(user **head, char *user_str, char *passwd_str, int *result)
 	*result = 1;
 	return ret;
 }
-//´´½¨Ô¤¶©ĞÅÏ¢Í·
+//åˆ›å»ºé¢„è®¢ä¿¡æ¯å¤´
 int hotel_reserve(int room_id, int t_start, int t_end, int *result)
 {
 
 }
-//Íê³É£¬ÓÃ»§Ìí¼Ó
+//å®Œæˆï¼Œç”¨æˆ·æ·»åŠ 
 int user_addback(user *head, char *user_str, char *passwd_str)
 {
 	int ret = 0;
@@ -127,19 +127,19 @@ int user_addback(user *head, char *user_str, char *passwd_str)
 	p->next = NULL;
 	return 0;
 }
-//Íê³É£¬ÓÃ»§×¢²á
+//å®Œæˆï¼Œç”¨æˆ·æ³¨å†Œ
 int user_register(user *head_in, char *userName, char *passWord, int *bool_return)
 {
 	int ret = 0;
 	int result = 0;
 	user *start = head_in;
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if ( head_in == NULL){
 		ret = -1;
 		printf("err:link_list of user information is NULL \n");
 		return ret;
 	}
-	//²éÑ¯ÓÃ»§Ãû³ÆÊÇ·ñ´æÔÚ
+	//æŸ¥è¯¢ç”¨æˆ·åç§°æ˜¯å¦å­˜åœ¨
 	ret = find_string_in_user(start, userName, &result);
 	if (result == 0){
 		*bool_return = 1;
@@ -154,11 +154,11 @@ int user_register(user *head_in, char *userName, char *passWord, int *bool_retur
 	return -1;
 
 }
-//Íê³É£¬´ÓÎÄ¼ş»ñÈ¡¹Ø¼ü×Ö
+//å®Œæˆï¼Œä»æ–‡ä»¶è·å–å…³é”®å­—
 int get_KEY_form_buf(char *key_str, char *value_str, char *key_value_str, int  *value_buf_length)
 {
 	char *ptr = NULL;
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (key_str == NULL){
 		printf("err:char *key_str == NULL\n");
 		return -1;
@@ -175,25 +175,25 @@ int get_KEY_form_buf(char *key_str, char *value_str, char *key_value_str, int  *
 		printf("err: int *value_buf_length == NULL\n");
 		return -1;
 	}
-	//×ª½Ó
+	//è½¬æ¥
 	ptr = key_value_str;
-	//ÕÒ¹Ø¼ü×Ö
+	//æ‰¾å…³é”®å­—
 	ptr = strstr(ptr, key_str);
 	if (ptr == NULL){
 		return -1;
 	}
-	//ÕÒµÈºÅ
+	//æ‰¾ç­‰å·
 	while ((*ptr) != '=' && (*ptr) != '\0'){
 		ptr++;
 	}
 	ptr++;
-	//µ÷ÓÃÈ¥³ı¿Õ¸ñ´¦Àí
+	//è°ƒç”¨å»é™¤ç©ºæ ¼å¤„ç†
 	dislodge_blank_from_str(ptr, value_str);
-	//¼ÆËã³¤¶È
+	//è®¡ç®—é•¿åº¦
 	*value_buf_length = strlen(value_str);
 	return 0;
 }
-//Íê³É£¬×Ö·û´®´¦Àí£¬È¥³ıÁ½Í·µÄ¿Õ¸ñ 
+//å®Œæˆï¼Œå­—ç¬¦ä¸²å¤„ç†ï¼Œå»é™¤ä¸¤å¤´çš„ç©ºæ ¼ 
 int dislodge_blank_from_str(char *source_str, char *output_buffer)
 {
 	char *p = source_str;
@@ -224,7 +224,7 @@ int dislodge_blank_from_str(char *source_str, char *output_buffer)
 	*(++r) = '\0';
 	return 0;
 }
-//Ã»ÓĞÍê³É£¬´ÓÎÄ¼şÔØÈëÓÃ»§Êı¾İ
+//æ²¡æœ‰å®Œæˆï¼Œä»æ–‡ä»¶è½½å…¥ç”¨æˆ·æ•°æ®
 int load_userdata(struct user_inf **r, int *result)
 {
 	int ret = 0;
@@ -237,19 +237,19 @@ int load_userdata(struct user_inf **r, int *result)
 	char key_passwd[16];
 	char *ptr = NULL;
 	int buf_length = 0;
-	//ÔØÈëÎÄ¼şÊı¾İ 
+	//è½½å…¥æ–‡ä»¶æ•°æ® 
 	FILE *fp = NULL;
 	fp = fopen("E:\\project_doucment\\data\\user.txt","r+");
-	//¶ÁÈ¡ÍêÎÄ¼ş²ÅĞĞ 
+	//è¯»å–å®Œæ–‡ä»¶æ‰è¡Œ 
 	while( !feof(fp)) {
-		//Ğ£Ñé
+		//æ ¡éªŒ
 		if(fp == NULL){
 			printf("err:load data fail, user data file can not open \n");
 			ret = -1;
 			return ret;
 		}
 		while (exit_sum){
-			//Ò»¶¨Òª¶ÁÈ¡µ½user_name¹Ø¼ü×Ö 
+			//ä¸€å®šè¦è¯»å–åˆ°user_nameå…³é”®å­— 
 			fgets(str_temp, 16, fp);
 			ptr = strstr(str_temp, "user_name");
 			if (ptr != NULL){
@@ -262,9 +262,9 @@ int load_userdata(struct user_inf **r, int *result)
 			}
 		}
 		get_KEY_form_buf("user_name", key_user, str_temp, &buf_length);
-		//ÓÃ»§Ãû
+		//ç”¨æˆ·å
 		while (exit_sum){
-			//Ò»¶¨Òª¶ÁÈ¡µ½passwd¹Ø¼ü×Ö 
+			//ä¸€å®šè¦è¯»å–åˆ°passwdå…³é”®å­— 
 			fgets(str_temp, 16, fp);
 			ptr = strstr(str_temp, "passwd");
 			if (ptr != NULL){
@@ -293,7 +293,7 @@ int load_userdata(struct user_inf **r, int *result)
 	return 0;
 	
 }
-//Ã»ÓĞÍê³É£¬´ÓÎÄ¼şÔØÈë·¿¼äÊı¾İ
+//æ²¡æœ‰å®Œæˆï¼Œä»æ–‡ä»¶è½½å…¥æˆ¿é—´æ•°æ®
 int load_userdata(room **out_linkList, int *result)
 {
 	int ret = 0;
@@ -306,19 +306,19 @@ int load_userdata(room **out_linkList, int *result)
 	char key_passwd[16];
 	char *ptr = NULL;
 	int buf_length = 0;
-	//ÔØÈëÎÄ¼şÊı¾İ 
+	//è½½å…¥æ–‡ä»¶æ•°æ® 
 	FILE *fp = NULL;
 	fp = fopen("E:\\project_doucment\\data\\user.txt", "r+");
-	//¶ÁÈ¡ÍêÎÄ¼ş²ÅĞĞ 
+	//è¯»å–å®Œæ–‡ä»¶æ‰è¡Œ 
 	while (!feof(fp)) {
-		//Ğ£Ñé
+		//æ ¡éªŒ
 		if (fp == NULL){
 			printf("err:load data fail, user data file can not open \n");
 			ret = -1;
 			return ret;
 		}
 		while (exit_sum){
-			//Ò»¶¨Òª¶ÁÈ¡µ½user_name¹Ø¼ü×Ö 
+			//ä¸€å®šè¦è¯»å–åˆ°user_nameå…³é”®å­— 
 			fgets(str_temp, 16, fp);
 			ptr = strstr(str_temp, "user_name");
 			if (ptr != NULL){
@@ -331,9 +331,9 @@ int load_userdata(room **out_linkList, int *result)
 			}
 		}
 		get_KEY_form_buf("user_name", key_user, str_temp, &buf_length);
-		//ÓÃ»§Ãû
+		//ç”¨æˆ·å
 		while (exit_sum){
-			//Ò»¶¨Òª¶ÁÈ¡µ½passwd¹Ø¼ü×Ö 
+			//ä¸€å®šè¦è¯»å–åˆ°passwdå…³é”®å­— 
 			fgets(str_temp, 16, fp);
 			ptr = strstr(str_temp, "passwd");
 			if (ptr != NULL){
@@ -361,7 +361,7 @@ int load_userdata(room **out_linkList, int *result)
 	*result = 1;
 	return 0;
 }
-//Íê³É£¬¼ì²éÓÃ»§Ãû£¬ÃÜÂë(±éÀúÁ´±í£©
+//å®Œæˆï¼Œæ£€æŸ¥ç”¨æˆ·åï¼Œå¯†ç (éå†é“¾è¡¨ï¼‰
 int check_user_login(char *userName, char *passWord, int *state, user *user_infor, user **userid_return)
 {
 	int result = 0;
@@ -381,7 +381,7 @@ int check_user_login(char *userName, char *passWord, int *state, user *user_info
 	*state = 1;
 	return 0;
 }
-//Íê³É£¬²é¿´µ±Ç°¿ÉÓÃ¿Í·¿(±éÀúÁ´±í£©
+//å®Œæˆï¼ŒæŸ¥çœ‹å½“å‰å¯ç”¨å®¢æˆ¿(éå†é“¾è¡¨ï¼‰
 int find_free_room(room *h_start, int f_date, int s_date, int *list_result)
 {
 	int print_times = 0;
@@ -390,7 +390,7 @@ int find_free_room(room *h_start, int f_date, int s_date, int *list_result)
 	int start = f_date;
 	int finish = s_date;
 	room *p = h_start;
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (h_start == NULL){
 		printf("err:source_str == NULL\n");
 		return -1;
@@ -407,7 +407,7 @@ int find_free_room(room *h_start, int f_date, int s_date, int *list_result)
 	*list_result = print_times;
 	return 0;
 }
-//Í¨¹ıidÑ°ÕÒ·¿¼äĞÅÏ¢µØÖ·(±éÀúÁ´±í£©
+//é€šè¿‡idå¯»æ‰¾æˆ¿é—´ä¿¡æ¯åœ°å€(éå†é“¾è¡¨ï¼‰
 int find_room_by_id(int id, room *head_info, room **out_ptr, int *result)
 {
 	int key = id;
@@ -433,7 +433,7 @@ int find_room_by_id(int id, room *head_info, room **out_ptr, int *result)
 	}
 
 }
-//Íê³É£¬´ÓÎÄ¼şÀï»ñÈ¡ÓÃ»§Ãû
+//å®Œæˆï¼Œä»æ–‡ä»¶é‡Œè·å–ç”¨æˆ·å
 int get_userName_string(const char *source, const char end_sign, char *outbuf,int *buf_length,  int *result)
 {
 	char *str = source;
@@ -441,7 +441,7 @@ int get_userName_string(const char *source, const char end_sign, char *outbuf,in
 	char *c = end_sign;
 	char temp_buf[32];
 	int str_count = 0;
-	//Ğ£Ñé
+	//æ ¡éªŒ
 	if (outbuf == NULL){
 		printf("err:char *outbuffer == NULL\n");
 		return -1;
@@ -469,3 +469,16 @@ int get_userName_string(const char *source, const char end_sign, char *outbuf,in
 	*result = 1;
 	return ret;
 }
+
+//é€šè¿‡idå¯»æ‰¾æˆ¿é—´ä¿¡æ¯åœ°å€(éå†é“¾è¡¨ï¼‰
+int delete_room_by_id(int id, room *head_info, int *result)
+{ 
+
+}	
+	
+	
+	
+	
+	
+	
+	
