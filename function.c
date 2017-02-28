@@ -470,10 +470,16 @@ int get_userName_string(const char *source, const char end_sign, char *outbuf,in
 	return ret;
 }
 
-//通过id寻找房间信息地址(遍历链表）
-int delete_room_by_id(int id, room *head_info, int *result)
+//通过id删除房间(遍历链表）
+int delete_room_by_id(const int id, const room *head_info, int *result)
 { 
-
+    room *p = head_info;
+    room* p1 = NULL, p2 = NULL, p3 = NULL;
+    while (p != NULL){
+        if (p->next->id == id){
+            
+         }
+    }
 }	
 	
 	
