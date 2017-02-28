@@ -1,38 +1,42 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
 #include "myfile.h"
 
-int main(void) {
-	//å‡½æ•°è°ƒç”¨å˜é‡
+int main(void) 
+{
+	//º¯Êıµ÷ÓÃ±äÁ¿
 	int bool_judge = 0;
 	int ret = 0;
-	//ç®¡ç†å®¢æˆ¿ä½¿ç”¨å˜é‡
+	//¹ÜÀí¿Í·¿Ê¹ÓÃ±äÁ¿
 	int date_check_in = 0;
 	int date_check_out = 0;
-	//mainå‡½æ•°ä½¿ç”¨å˜é‡
+	//mainº¯ÊıÊ¹ÓÃ±äÁ¿
 	char user_name[16];
 	char user_passwd[16];
-	struct room *room_head = NULL;
-	struct user_inf *user_head = NULL;
-	//å¼€å§‹ç•Œé¢
+	room *room_head = NULL;
+	user *user_head = NULL;
+	//¿ªÊ¼½çÃæ
 	int m = 1; 
 	int n = 1;
 	int chose = 1;
 	int i = 0;
 	user *user_id = NULL;
-	//ç¨‹åºæ•°æ®è½½å…¥
-	load_disk_data(&room_head, &user_head);
+	//³ÌĞòÊı¾İÔØÈë
+	load_userdata(&user_head);
+	ret = 0;
+	load_roomdata(&room_head, &ret);
 	printf("--------welcome to the hotel management system--------\n");
 	while (m){
 	printf("1.register \n2.login \nother.exit \nenter :");
 	scanf("%d",&chose);
 	printf("\n");
-	//é‡å¤æ ¡éªŒç”¨æˆ·ä¿¡æ¯
+	//ÖØ¸´Ğ£ÑéÓÃ»§ĞÅÏ¢
 		switch(chose) {
 			case 1:
-				//ç”¨æˆ·æ³¨å†Œ 
+				//ÓÃ»§×¢²á 
 				while(n){
 					printf("enter a new user name:");
 					gets(user_name);
@@ -40,14 +44,14 @@ int main(void) {
 					gets(user_passwd);
 					ret = user_register(user_head, user_name, user_passwd, &bool_judge);
 					if (ret != 0){
-						printf("éæ³•ä¼ å‚æ•°\n");
+						printf("·Ç·¨´«²ÎÊı\n");
 						return -1;
 					}
 					if (bool_judge == 1){
 					 	printf("err:registered fail,user-name has registered\n");
 					 	printf("continue register, please input 1,other input will exit\n");
 					 	scanf("%d",&i);
-						//é€€å‡ºæ­»å¾ªç¯ 
+						//ÍË³öËÀÑ­»· 
 					 	if(i != 1){
 					 		n = 0;
 						 }
@@ -56,7 +60,7 @@ int main(void) {
 				}
 				break;
 			case 2:
-				//ç”¨æˆ·ç™»å½• 
+				//ÓÃ»§µÇÂ¼ 
 				while(n){ 
 					printf("login name:");
 					gets(user_name);
@@ -68,7 +72,7 @@ int main(void) {
 						printf("continue login please input 1,other input will exit:");
 						scanf("%d",&i);
 						if(i != 1){
-						 	//é€€å‡ºæ­»å¾ªç¯ 
+						 	//ÍË³öËÀÑ­»· 
 							break;
 			    		 }
 						continue;
@@ -78,27 +82,28 @@ int main(void) {
 					}else{
 						m = 0;
 						break;
-						//é€€å‡ºæ­»å¾ªç¯ 
+						//ÍË³öËÀÑ­»· 
 					}
 				} 
 				break;
 			default:
-				//é€€å‡º 
+				//ÍË³ö 
 				break;
 				return 0;
 		}
     }
-	//åˆå§‹åŒ–è¾…åŠ©å˜é‡
+	//³õÊ¼»¯¸¨Öú±äÁ¿
 	i = 0; chose = 0;
 	m = 0; n = 0;
-	//ç®¡ç†ç•Œé¢
+	//¹ÜÀí½çÃæ
 	if (user_id == NULL){
 		printf("user do not login success\n");
 		return -1;
 	}
 	system("cls");
 	printf("---%s-----welcome to the hotel management system--------\n",user_id->name);
-	while (m = 1){
+	m = 1;
+	while (m){
 		printf("----------------------please input sums to chose\n----------------\n");
 		printf("(1)room check out    \n(2)room reserve    \n(3)room information edit    \n(4)room add in    \n(5)room add in    \n");
 		printf("-----------------------------------------------------------------------------------------------------------------\n");
@@ -113,10 +118,12 @@ int main(void) {
 			scanf("%d", &date_check_in);
 			printf("please input date of check out,like 20160712 \n >>");
 			scanf("%d", &date_check_out);
-			//æŸ¥è¯¢
-			find_free_room(room_head, date_check_in, date_check_out, &bool_judge);//è‡ªåŠ¨æ‰“å°å¯ç”¨åˆ—è¡¨
-			//ç”¨idé¢„å®š
-
+			//²éÑ¯
+			find_free_room(room_head, date_check_in, date_check_out, &bool_judge);//×Ô¶¯´òÓ¡¿ÉÓÃÁĞ±í
+			//ÓÃidÔ¤¶¨
+			printf("room id:");
+			scanf("%d",&)
+		    hotel_reserve(int room_id, int t_start, int t_end, int *result);
 		}
 	}
 	return 0;

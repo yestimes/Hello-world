@@ -1,25 +1,15 @@
-#ifndef _STDIO_H_
-#include <stdio.h>
-#endif
-#ifndef _STDLIB_H_
-#include <stdlib.h>
-#endif
-#ifndef _STRING_H_
-#include <string.h>
-#endif
-#ifndef _MYFILE_H_
-#include "myfile.h"
-#endif
-#ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
-#endif
-
-//å®Œæˆï¼ŒæŸ¥æ‰¾ç”¨æˆ·å
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "myfile.h"
+									//ÓÃ»§
+//Íê³É£¬²éÕÒÓÃ»§Ãû
 int find_userName_in_user(user *source, user **return_user, char *aim_str, int *bool_out)
 {
 	int ret = 0;
 	user *p = source;
-	//æ ¡éªŒ
+	//Ğ£Ñé
 	if (source == NULL){
 		ret = -1;
 		printf(" user information is NULL \n");
@@ -42,12 +32,12 @@ int find_userName_in_user(user *source, user **return_user, char *aim_str, int *
 	*bool_out = 0;
 	return ret;
 }
-//å®Œæˆï¼Œæ ¡éªŒå¯†ç 
+//Íê³É£¬Ğ£ÑéÃÜÂë
 int check_passWord_in_user(user *source, char *aim_str, int *bool_out)
 {
 	int ret = 0;
 	user *p = source;
-	//æ ¡éªŒ
+	//Ğ£Ñé
 	if (source == NULL){
 		ret = -1;
 		printf(" user information is NULL \n");
@@ -73,8 +63,8 @@ int check_passWord_in_user(user *source, char *aim_str, int *bool_out)
 		}*/
 	return ret;
 }
-//å®Œæˆï¼Œåˆ›å»ºç”¨æˆ·ä¿¡æ¯å¤´
-int set_user_head(user **head, char *user_str, char *passwd_str, int *result)
+//Íê³É£¬´´½¨ÓÃ»§ĞÅÏ¢Í·
+int set_user_head(user **head, char *user_str, char *passwd_str)
 {
 	int ret = 0;
 	if( (head == NULL) || (user_str == NULL) || (passwd_str == NULL)){
@@ -88,15 +78,10 @@ int set_user_head(user **head, char *user_str, char *passwd_str, int *result)
 	strcpy(p->passwd,passwd_str);
 	p->next = NULL;
 	*head = p;
-	*result = 1;
 	return ret;
 }
-//åˆ›å»ºé¢„è®¢ä¿¡æ¯å¤´
-int hotel_reserve(int room_id, int t_start, int t_end, int *result)
-{
 
-}
-//å®Œæˆï¼Œç”¨æˆ·æ·»åŠ 
+//Íê³É£¬ÓÃ»§Ìí¼Ó
 int user_addback(user *head, char *user_str, char *passwd_str)
 {
 	int ret = 0;
@@ -127,20 +112,20 @@ int user_addback(user *head, char *user_str, char *passwd_str)
 	p->next = NULL;
 	return 0;
 }
-//å®Œæˆï¼Œç”¨æˆ·æ³¨å†Œ
+//Íê³É£¬ÓÃ»§×¢²á
 int user_register(user *head_in, char *userName, char *passWord, int *bool_return)
 {
 	int ret = 0;
 	int result = 0;
 	user *start = head_in;
-	//æ ¡éªŒ
+	//Ğ£Ñé
 	if ( head_in == NULL){
 		ret = -1;
 		printf("err:link_list of user information is NULL \n");
 		return ret;
 	}
-	//æŸ¥è¯¢ç”¨æˆ·åç§°æ˜¯å¦å­˜åœ¨
-	ret = find_string_in_user(start, userName, &result);
+	//²éÑ¯ÓÃ»§Ãû³ÆÊÇ·ñ´æÔÚ
+	/*ret = */find_string_in_user(start, userName, &result);
 	if (result == 0){
 		*bool_return = 1;
 		return ret;
@@ -154,11 +139,12 @@ int user_register(user *head_in, char *userName, char *passWord, int *bool_retur
 	return -1;
 
 }
-//å®Œæˆï¼Œä»æ–‡ä»¶è·å–å…³é”®å­—
+									//ÎÄ¼ş
+//Íê³É£¬´ÓÎÄ¼ş»ñÈ¡¹Ø¼ü×Ö
 int get_KEY_form_buf(char *key_str, char *value_str, char *key_value_str, int  *value_buf_length)
 {
 	char *ptr = NULL;
-	//æ ¡éªŒ
+	//Ğ£Ñé
 	if (key_str == NULL){
 		printf("err:char *key_str == NULL\n");
 		return -1;
@@ -175,25 +161,25 @@ int get_KEY_form_buf(char *key_str, char *value_str, char *key_value_str, int  *
 		printf("err: int *value_buf_length == NULL\n");
 		return -1;
 	}
-	//è½¬æ¥
+	//×ª½Ó
 	ptr = key_value_str;
-	//æ‰¾å…³é”®å­—
+	//ÕÒ¹Ø¼ü×Ö
 	ptr = strstr(ptr, key_str);
 	if (ptr == NULL){
 		return -1;
 	}
-	//æ‰¾ç­‰å·
+	//ÕÒµÈºÅ
 	while ((*ptr) != '=' && (*ptr) != '\0'){
 		ptr++;
 	}
 	ptr++;
-	//è°ƒç”¨å»é™¤ç©ºæ ¼å¤„ç†
+	//µ÷ÓÃÈ¥³ı¿Õ¸ñ´¦Àí
 	dislodge_blank_from_str(ptr, value_str);
-	//è®¡ç®—é•¿åº¦
+	//¼ÆËã³¤¶È
 	*value_buf_length = strlen(value_str);
 	return 0;
 }
-//å®Œæˆï¼Œå­—ç¬¦ä¸²å¤„ç†ï¼Œå»é™¤ä¸¤å¤´çš„ç©ºæ ¼ 
+//Íê³É£¬×Ö·û´®´¦Àí£¬È¥³ıÁ½Í·µÄ¿Õ¸ñ 
 int dislodge_blank_from_str(char *source_str, char *output_buffer)
 {
 	char *p = source_str;
@@ -224,10 +210,11 @@ int dislodge_blank_from_str(char *source_str, char *output_buffer)
 	*(++r) = '\0';
 	return 0;
 }
-//æ²¡æœ‰å®Œæˆï¼Œä»æ–‡ä»¶è½½å…¥ç”¨æˆ·æ•°æ®
-int load_userdata(struct user_inf **r, int *result)
+//Ã»ÓĞÍê³É£¬´ÓÎÄ¼şÔØÈëÓÃ»§Êı¾İ
+int load_userdata(struct user_inf **r)
 {
 	int ret = 0;
+	int result = 0;
 	int func_result = 0;
 	int exit_sum = 1;
 	int buf_count = 0;
@@ -237,19 +224,19 @@ int load_userdata(struct user_inf **r, int *result)
 	char key_passwd[16];
 	char *ptr = NULL;
 	int buf_length = 0;
-	//è½½å…¥æ–‡ä»¶æ•°æ® 
+	//ÔØÈëÎÄ¼şÊı¾İ 
 	FILE *fp = NULL;
 	fp = fopen("E:\\project_doucment\\data\\user.txt","r+");
-	//è¯»å–å®Œæ–‡ä»¶æ‰è¡Œ 
+	//¶ÁÈ¡ÍêÎÄ¼ş²ÅĞĞ 
 	while( !feof(fp)) {
-		//æ ¡éªŒ
+		//Ğ£Ñé
 		if(fp == NULL){
 			printf("err:load data fail, user data file can not open \n");
 			ret = -1;
 			return ret;
 		}
 		while (exit_sum){
-			//ä¸€å®šè¦è¯»å–åˆ°user_nameå…³é”®å­— 
+			//Ò»¶¨Òª¶ÁÈ¡µ½user_name¹Ø¼ü×Ö 
 			fgets(str_temp, 16, fp);
 			ptr = strstr(str_temp, "user_name");
 			if (ptr != NULL){
@@ -262,9 +249,9 @@ int load_userdata(struct user_inf **r, int *result)
 			}
 		}
 		get_KEY_form_buf("user_name", key_user, str_temp, &buf_length);
-		//ç”¨æˆ·å
+		//ÓÃ»§Ãû
 		while (exit_sum){
-			//ä¸€å®šè¦è¯»å–åˆ°passwdå…³é”®å­— 
+			//Ò»¶¨Òª¶ÁÈ¡µ½passwd¹Ø¼ü×Ö 
 			fgets(str_temp, 16, fp);
 			ptr = strstr(str_temp, "passwd");
 			if (ptr != NULL){
@@ -279,7 +266,7 @@ int load_userdata(struct user_inf **r, int *result)
 		}
 		get_KEY_form_buf("passwd", key_passwd, str_temp, &buf_length);
 		if (run_count == 0){
-			set_user_head(r, key_user, key_passwd, &result);
+			set_user_head(r, key_user, key_passwd);
 			run_count++;
 			if (result != 1){
 				printf("set user info head fail\n");
@@ -289,79 +276,21 @@ int load_userdata(struct user_inf **r, int *result)
 		}
 	}
 	fclose(fp);
-	*result = 1;
 	return 0;
 	
 }
-//æ²¡æœ‰å®Œæˆï¼Œä»æ–‡ä»¶è½½å…¥æˆ¿é—´æ•°æ®
-int load_userdata(room **out_linkList, int *result)
+//Ã»ÓĞÍê³É£¬´ÓÎÄ¼şÔØÈë·¿¼äÊı¾İ
+int load_roomdata(room **out_linkList, int *result)
 {
-	int ret = 0;
-	int func_result = 0;
-	int exit_sum = 1;
-	int buf_count = 0;
-	int run_count = 0;
-	char str_temp[16];
-	char key_user[16];
-	char key_passwd[16];
-	char *ptr = NULL;
-	int buf_length = 0;
-	//è½½å…¥æ–‡ä»¶æ•°æ® 
 	FILE *fp = NULL;
-	fp = fopen("E:\\project_doucment\\data\\user.txt", "r+");
-	//è¯»å–å®Œæ–‡ä»¶æ‰è¡Œ 
-	while (!feof(fp)) {
-		//æ ¡éªŒ
-		if (fp == NULL){
-			printf("err:load data fail, user data file can not open \n");
-			ret = -1;
-			return ret;
-		}
-		while (exit_sum){
-			//ä¸€å®šè¦è¯»å–åˆ°user_nameå…³é”®å­— 
-			fgets(str_temp, 16, fp);
-			ptr = strstr(str_temp, "user_name");
-			if (ptr != NULL){
-				break;
-				printf("do not break\n");
-			}
-			fgets(str_temp, 16, fp);
-			if (!feof(fp)) {
-				exit_sum = 0;
-			}
-		}
-		get_KEY_form_buf("user_name", key_user, str_temp, &buf_length);
-		//ç”¨æˆ·å
-		while (exit_sum){
-			//ä¸€å®šè¦è¯»å–åˆ°passwdå…³é”®å­— 
-			fgets(str_temp, 16, fp);
-			ptr = strstr(str_temp, "passwd");
-			if (ptr != NULL){
-				break;
-				printf("do not break\n");
-			}
-			fgets(str_temp, 16, fp);
-			if (!feof(fp)) {
-				break;
-				exit_sum = 0;
-			}
-		}
-		get_KEY_form_buf("passwd", key_passwd, str_temp, &buf_length);
-		if (run_count == 0){
-			set_user_head(r, key_user, key_passwd, &result);
-			run_count++;
-			if (result != 1){
-				printf("set user info head fail\n");
-				return -1;
-			}
-			user_addback(*r, key_user, key_passwd);
-		}
+	fp = fopen("E:\\project_doucment\\data","r+");
+	if (fp = NULL){
+		printf("err:open files fail\n");
+		return -1;
 	}
-	fclose(fp);
-	*result = 1;
 	return 0;
 }
-//å®Œæˆï¼Œæ£€æŸ¥ç”¨æˆ·åï¼Œå¯†ç (éå†é“¾è¡¨ï¼‰
+//Íê³É£¬¼ì²éÓÃ»§Ãû£¬ÃÜÂë(±éÀúÁ´±í£©
 int check_user_login(char *userName, char *passWord, int *state, user *user_infor, user **userid_return)
 {
 	int result = 0;
@@ -381,33 +310,7 @@ int check_user_login(char *userName, char *passWord, int *state, user *user_info
 	*state = 1;
 	return 0;
 }
-//å®Œæˆï¼ŒæŸ¥çœ‹å½“å‰å¯ç”¨å®¢æˆ¿(éå†é“¾è¡¨ï¼‰
-int find_free_room(room *h_start, int f_date, int s_date, int *list_result)
-{
-	int print_times = 0;
-	char *state_to_string[3] = { "free", "using", "wait" };
-	room *head = h_start;
-	int start = f_date;
-	int finish = s_date;
-	room *p = h_start;
-	//æ ¡éªŒ
-	if (h_start == NULL){
-		printf("err:source_str == NULL\n");
-		return -1;
-	}
-	printf("--id-----state------price-----\n");
-	printf(" your reserch %5d to %5d ",p->t_start, p->t_end);
-	while (p != NULL){
-		if (p->state == 0){
-			printf("%5d %s %5d \n", p->id, state_to_string[p->state], p->price/*, p->t_start, p->t_end*/);
-			print_times++;
-		}
-		p = p->next;
-	}
-	*list_result = print_times;
-	return 0;
-}
-//é€šè¿‡idå¯»æ‰¾æˆ¿é—´ä¿¡æ¯åœ°å€(éå†é“¾è¡¨ï¼‰
+/*Í¨¹ıidÑ°ÕÒ·¿¼äĞÅÏ¢µØÖ·(±éÀúÁ´±í£©*/
 int find_room_by_id(int id, room *head_info, room **out_ptr, int *result)
 {
 	int key = id;
@@ -431,60 +334,73 @@ int find_room_by_id(int id, room *head_info, room **out_ptr, int *result)
 		}
 		p = p->next;
 	}
-
-}
-//å®Œæˆï¼Œä»æ–‡ä»¶é‡Œè·å–ç”¨æˆ·å
-int get_userName_string(const char *source, const char end_sign, char *outbuf,int *buf_length,  int *result)
-{
-	char *str = source;
-	int ret = 0;
-	char *c = end_sign;
-	char temp_buf[32];
-	int str_count = 0;
-	//æ ¡éªŒ
-	if (outbuf == NULL){
-		printf("err:char *outbuffer == NULL\n");
-		return -1;
-	}
-	if (source == NULL){
-		printf("err:char *string == NULL\n");
-		return -1;
-	}
-	if (end_sign == NULL){
-		printf("err:char *end_sign == NULL\n");
-		return -1;
-	}
-	if (result == NULL){
-		printf("err:int *key_value_str == NULL\n");
-		return -1;
-	}
-	while ((*str) != c && (*str) != '\0'){
-		if (*(str) != ' '){
-			temp_buf[str_count] = *str;
-			str_count++;
-		}
-	}
-	strcpy(outbuf, temp_buf);
-	*buf_length = str_count;
+	*out_ptr = NULL;
 	*result = 1;
 	return ret;
 }
 
-//é€šè¿‡idåˆ é™¤æˆ¿é—´(éå†é“¾è¡¨ï¼‰
+									//·¿¼ä
+//Í¨¹ıidÉ¾³ı·¿¼ä(±éÀúÁ´±í£©
 int delete_room_by_id(const int id, const room *head_info, int *result)
-{ 
-    room *p = head_info;
-    room* p1 = NULL, p2 = NULL, p3 = NULL;
-    while (p != NULL){
-        if (p->next->id == id){
-            
-         }
-    }
-}	
-	
-	
-	
-	
-	
-	
-	
+{
+	room *p = head_info;
+	room* p1 = NULL;
+	room *p2 = NULL;
+	room *p3 = NULL;
+	//Ğ£Ñé
+	if (p == NULL){
+		printf("err:room *head_info == NULL\n");
+		return -1;
+	}
+	if (result == NULL){
+		printf("err:int *result == NULL\n");
+		return -1;
+	}
+	while (p != NULL){
+		if (p->next->id == id){
+			p1 = p;
+			p2 = p->next->next;
+			break;
+		}
+		p = p->next;
+	}
+	p1->next = p2;
+	if (p != NULL){
+		free(p);
+		p = NULL;
+	}
+	return 0;
+}
+//Íê³É£¬²é¿´µ±Ç°¿ÉÓÃ¿Í·¿(±éÀúÁ´±í£©
+int find_free_room(room *h_start, int f_date, int s_date, int *list_result)
+{
+	int print_times = 0;
+	int ret = 0;
+	char *state_to_string[3] = { "free", "using", "wait" };
+	room *head = h_start;
+	int start = f_date;
+	int finish = s_date;
+	room *p = h_start;
+	//Ğ£Ñé
+	if (h_start == NULL){
+		printf("err:source_str == NULL\n");
+		return -1;
+	}
+	printf("--id-----state------price-----\n");
+	printf(" your reserch %5d to %5d ", p->t_start, p->t_end);
+	while (p != NULL){
+		if (p->state == 0){
+			printf("%5d %s %5d \n", p->id, state_to_string[p->state], p->price/*, p->t_start, p->t_end*/);
+			print_times++;
+		}
+		p = p->next;
+	}
+	*list_result = print_times;
+	return ret;
+}
+									//Ô¤¶©
+//´´½¨Ô¤¶©ĞÅÏ¢Í·
+int hotel_reserve(int room_id, int t_start, int t_end, int *result)
+{
+	return 0;
+}
