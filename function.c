@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+//#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -80,7 +80,6 @@ int set_user_head(user **head, char *user_str, char *passwd_str)
 	*head = p;
 	return ret;
 }
-
 //完成，用户添加
 int user_addback(user *head, char *user_str, char *passwd_str)
 {
@@ -224,6 +223,7 @@ int load_userdata(struct user_inf **r)
 	char key_passwd[16];
 	char *ptr = NULL;
 	int buf_length = 0;
+	int count = 0;
 	//载入文件数据 
 	FILE *fp = NULL;
 	fp = fopen("E:\\project_doucment\\data\\user.txt","r+");
@@ -243,13 +243,18 @@ int load_userdata(struct user_inf **r)
 				break;
 				printf("do not break\n");
 			}
+			count++;
 			fgets(str_temp, 16, fp);
 			if(!feof(fp)) {
 				exit_sum = 0;
 			}
+			if (count >= 3){
+				strcpy(str_temp, "null");
+				break;
+			}
 		}
 		get_KEY_form_buf("user_name", key_user, str_temp, &buf_length);
-		//用户名
+		//密码
 		while (exit_sum){
 			//一定要读取到passwd关键字 
 			fgets(str_temp, 16, fp);
@@ -376,6 +381,7 @@ int find_free_room(room *h_start, int f_date, int s_date, int *list_result)
 {
 	int print_times = 0;
 	int ret = 0;
+	int outcome = 0;
 	char *state_to_string[3] = { "free", "using", "wait" };
 	room *head = h_start;
 	int start = f_date;
@@ -389,8 +395,9 @@ int find_free_room(room *h_start, int f_date, int s_date, int *list_result)
 	printf("--id-----state------price-----\n");
 	printf(" your reserch %5d to %5d ", p->t_start, p->t_end);
 	while (p != NULL){
-		if (p->state == 0){
-			printf("%5d %s %5d \n", p->id, state_to_string[p->state], p->price/*, p->t_start, p->t_end*/);
+		check_room_reserve(head, f_date, s_date, &outcome);
+		if (outcome == 1 ){
+			printf("%5d %s %d\n",p->id,state_to_string[p->state],p->price);
 			print_times++;
 		}
 		p = p->next;
@@ -400,7 +407,53 @@ int find_free_room(room *h_start, int f_date, int s_date, int *list_result)
 }
 									//预订
 //创建预订信息头
-int hotel_reserve(int room_id, int t_start, int t_end, int *result)
+int hotel_reserve(room *source, int room_id, int t_start, int t_end, int *result)
 {
+	room *p = NULL;
+	int outcome = 0;
+	//校验
+	if (source == NULL){
+		printf("err:source of room == NULL\n");
+		return -1;
+	}
+	find_room_by_id(room_id, source, &p, &outcome);
+	if (outcome == 0){
+		printf("err:do not find room by id\n");
+		*result = 0;
+		return -2;
+	}
+	p->t_start = t_start;
+	p->t_end = t_end;
+	*result = 1;
 	return 0;
+}
+//查询房间预订情况
+int check_room_reserve(const room *info, const int t_start, const int t_end, int *result)
+{
+	book_room *p = info->head_book; 
+	int count = 0;
+	//校验
+	if (info == NULL){
+		printf("err:room *information == NULL\n");
+		return -1;
+	}
+	if (p == NULL){
+		printf("err:room book == NULL\n");
+		return -1;
+	}
+	while (p->next != NULL){
+		if (count == 0){
+			if (t_end < p->t_start){
+				*result = 1;
+				return 0;
+			}
+			count++;
+		}
+		else{
+			if ( (t_start > p->t_end) || (t_end < p->next->t_start)){
+				*result = 1;
+				return 0;
+			}
+		}
+	}
 }

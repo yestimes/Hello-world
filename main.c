@@ -1,8 +1,7 @@
-#define _CRT_SECURE_NO_WARNINGS
+//#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <windows.h>
 #include "myfile.h"
 
 int main(void) 
@@ -10,6 +9,7 @@ int main(void)
 	//函数调用变量
 	int bool_judge = 0;
 	int ret = 0;
+	int result = 0;
 	//管理客房使用变量
 	int date_check_in = 0;
 	int date_check_out = 0;
@@ -24,6 +24,7 @@ int main(void)
 	int chose = 1;
 	int i = 0;
 	user *user_id = NULL;
+	int id = 0;
 	//程序数据载入
 	load_userdata(&user_head);
 	ret = 0;
@@ -105,25 +106,44 @@ int main(void)
 	m = 1;
 	while (m){
 		printf("----------------------please input sums to chose\n----------------\n");
-		printf("(1)room check out    \n(2)room reserve    \n(3)room information edit    \n(4)room add in    \n(5)room add in    \n");
+		printf("(1)入住    \n(2)预定    \n(3)房间信息编辑   \n(4)房间添加    \n(5)房间删除    \n(0)退出");
 		printf("-----------------------------------------------------------------------------------------------------------------\n");
 		printf("please chose:", &chose);
 		switch (chose){
-		case 0:
-			system("cls");
-			printf("input err\n");
-			continue;
-		case 1:
-			printf("please input date of check in,like  20160420 \n >>");
-			scanf("%d", &date_check_in);
-			printf("please input date of check out,like 20160712 \n >>");
-			scanf("%d", &date_check_out);
-			//查询
-			find_free_room(room_head, date_check_in, date_check_out, &bool_judge);//自动打印可用列表
-			//用id预定
-			printf("room id:");
-			scanf("%d",&)
-		    hotel_reserve(int room_id, int t_start, int t_end, int *result);
+			case 0:
+
+			case 1:
+				printf("please input date of check in,like  20160420 \n >>");
+				scanf("%d", &date_check_in);
+				printf("please input date of check out,like 20160712 \n >>");
+				scanf("%d", &date_check_out);
+				//查询
+				find_free_room(room_head, date_check_in, date_check_out, &bool_judge);//自动打印可用列表
+				//用id预定
+				printf("room id:");
+				scanf("%d",&id);
+				continue;
+		   	case 2:
+		   		printf("please input date of check in,like  20160420 \n >>");
+				scanf("%d", &date_check_in);
+				printf("please input date of check out,like 20160712 \n >>");
+				scanf("%d", &date_check_out);
+				find_free_room(room_head, date_check_in, date_check_out, &bool_judge);//自动打印可用列表
+				printf("enter free room id:");
+				scanf("%d", &id);
+				hotel_reserve(user_head,id, date_check_in, date_check_out, &result);
+				if (result == 1){
+					printf("success!\n");
+				}
+				else{
+					printf("sorry,fail,you can find technique help\n");
+				}
+				system("cls");
+				continue;
+			default:
+				system("cls");
+				printf("input err\n");
+				continue;
 		}
 	}
 	return 0;
