@@ -8,15 +8,15 @@ typedef struct room_book{
 	int t_end;
 	char name[16];
 	struct room_book *next;
-}book_room;
+}room_book;
 typedef struct hotel_room{
 	int id;
-	char name_guest;
+	char name_guest[16];
 	int state;
 	int price;
 	int t_start;
 	int t_end;
-	book_room *head_book;
+	room_book *head_book;
 	struct hotel_room *next;
 }room;
 
@@ -32,6 +32,7 @@ int load_roomdata(room **out_linkList, int *result);
 int check_user_login(char *userName, char *passWord, int *state, user *user_infor, user **userid_return);
 int find_room_by_id(int id, room *head_info, room **out_ptr, int *result);
 int find_free_room(room *h_start, int f_date, int s_date, int *list_result);
-int check_room_reserve(room *info, int t_start, int t_end, int *result);
-int hotel_reserve(room *source, int room_id, int t_start, int t_end, int *result);
+int hotel_reserve(room *source, const char *name, int room_id_sn, int t_start, int t_end, int *result);
+int reserve_addback(room_book **head_book_ptr, const char *name, const int t_start, const int t_end, int *result);
+
 

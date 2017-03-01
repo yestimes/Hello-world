@@ -1,4 +1,4 @@
-//#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -111,8 +111,8 @@ int main(void)
 		printf("please chose:", &chose);
 		switch (chose){
 			case 0:
-
-			case 1:
+			/*	退出，保存数据到硬盘*/
+			case 1://(1)入住 
 				printf("please input date of check in,like  20160420 \n >>");
 				scanf("%d", &date_check_in);
 				printf("please input date of check out,like 20160712 \n >>");
@@ -123,7 +123,7 @@ int main(void)
 				printf("room id:");
 				scanf("%d",&id);
 				continue;
-		   	case 2:
+		   	case 2://预定
 		   		printf("please input date of check in,like  20160420 \n >>");
 				scanf("%d", &date_check_in);
 				printf("please input date of check out,like 20160712 \n >>");
