@@ -36,5 +36,8 @@ int hotel_reserve(room *source, const char *name, int room_id_sn, int t_start, i
 int reserve_addback(room_book **head_book_ptr, const char *name, const int t_start, const int t_end, int *result);
 int edit_room(const room *head_info, const int chose, int id, char *name_guest, int state, int price, int t_start, int t_end, int *result);
 int check_in(int room_id_sn, room *source, const char *name, int t_start, int t_end, int *result);
-
+int free_user(const user *start, int *result);
+int free_reserve(const room *head_info, int *result);
+int free_all_room(const room *head_info, int *result);
+int room_add(const room *source, int id, int price, int *result);
 

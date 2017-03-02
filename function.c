@@ -411,6 +411,35 @@ int find_free_room(room *h_start, int f_date, int s_date, int *list_result)
 	*list_result = print_times;
 	return ret;
 }
+//添加房间
+int room_add(const room *source, int id, int price, int *result)
+{
+	if (source == NULL){
+		printf("err:room infomation is null\n");
+		*result = 0;
+		printf("press any key to continue\n");
+		getchar();
+		return -1;
+	}
+	room *p = source;
+	room *r = NULL;
+	while (p->next != NULL){
+		p = p->next;
+	}
+	r = (room *)malloc(sizeof(room));
+	r->next = NULL;
+	r->head_book = NULL;
+	r->id = id;
+	strcpy(r->name_guest,"null");
+	r->price = price;
+	r->state = 0;
+	r->t_end = 0;
+	r->t_start = 0;
+	p->next = r;
+
+	*result = 1;
+	return 0;
+}
 									//预订
 //创建预订信息头
 int reserve_addback(room_book **head_book_ptr, const char *name, const int t_start, const int t_end, int *result)
@@ -463,7 +492,7 @@ int reserve_addback(room_book **head_book_ptr, const char *name, const int t_sta
 	*result = 1;
 	return 0;
 }
-//没有完成,房间预订
+//房间预订
 int hotel_reserve(room *source,const char *name, int room_id_sn, int t_start, int t_end, int *result)
 {
 	room *p = NULL;//被房间节点赋值
@@ -564,6 +593,115 @@ int edit_room(const room *head_info,const int chose, int id, char *name_guest, i
 		default:
 			printf("input err\n");
 			*result = 0;
+	}
+	*result = 1;
+	return 0;
+}
+//完成，释放用户信息
+int free_user(const user *start, int *result)
+{
+	//校验
+	if (start == NULL){
+		printf("err:user of link-list head is null\n");
+		*result = 0;
+		printf("press any key to continue\n");
+		getchar();
+	}
+	user *p = start;
+	user *r = NULL;
+	while (p != NULL){
+		r = p->next;
+		if (p != NULL){
+			free(p);
+		}
+		p = r;
+	}
+	*result = 1;
+	return 0;
+}
+//完成，释放预定
+int free_reserve(const room *head_info, int *result)
+{
+	room_book *p = head_info->head_book;
+	room_book *r = NULL;
+	//校验
+	if (head_info== NULL){
+		printf("err:room of link-list head is null\n");
+		*result = 0;
+		printf("press any key to continue\n");
+		getchar();
+	}
+	while ( p != NULL){
+		r = p->next;
+		if (p != NULL){
+			free(p);
+		}
+		p = r;
+	}
+	*result = 1;
+	return 0;
+}
+//完成，释放客房
+int free_all_room(const room *head_info, int *result)
+{
+	room *p = head_info;
+	room *r = NULL;
+	int ret = 0;
+	if (head_info == NULL){
+		printf("err:room of link-list head is null\n");
+		*result = 0;
+		printf("press any key to continue\n");
+		getchar();
+		return -1;
+	}
+	//释放所有房间下的预定
+	while (p != NULL){
+		free_reserve(p, &ret);
+		if (ret == 0){
+			printf("err:free %p id :%d is fail\n");
+			*result = 0;
+			printf("press any key to continue\n");
+			getchar();
+			break;
+			return -1;
+		}
+		p = p->next;
+	}
+	//释放所有房间
+	p = head_info;
+	while (p != NULL){
+		r = p->next;
+		free(p);
+		p = r;
+	}
+	*result = 1;
+	return 0;
+}
+//客房按id排序
+int sort_room_by_id(const room *start, int *result)
+{
+	room temp;
+	room *p = NULL;
+	room *r = NULL;
+	if (start == NULL){
+		printf("err:information is null\n");
+		printf("press any key to continue\n");
+		getchar();
+		*result - 0;
+		return -1;
+	}
+	p = start;
+	while (p != NULL){
+		r = p;
+		while (r != NULL){
+			if (p->id > r->id){
+				temp = *p;
+				*p = *r;
+				*r = temp;
+			}
+			r = r->next;
+		}
+		p = p->next;
 	}
 	*result = 1;
 	return 0;
