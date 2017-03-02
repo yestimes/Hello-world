@@ -39,7 +39,7 @@ int main(void)
 	printf("--------welcome to the hotel management system--------\n");
 	while (m){
 	printf("1.register \n2.login \nother.exit \nenter :");
-	scanf("%d",&chose);
+	scanf("%d", &chose); 
 	printf("\n");
 	//重复校验用户信息
 		switch(chose) {
@@ -70,6 +70,7 @@ int main(void)
 			case 2:
 				//用户登录 
 				while(n){ 
+					getchar();
 					printf("login name:");
 					gets(user_name);
 					printf("passwd:");
@@ -141,233 +142,234 @@ int main(void)
 				break;
 			}
 			break;
-	
-			case 1://(1)入住 
-				printf("please input date of check in,like  20160420 \n >>");
-				scanf("%d", &date_check_in);
-				printf("please input date of check out,like 20160712 \n >>");
-				scanf("%d", &date_check_out);
-				//查询
-				find_free_room(room_head, date_check_in, date_check_out, &bool_judge);//自动打印可用列表
-				//用id预定
-				printf("room id:");
-				scanf("%d",&id);
-				continue;
-		   	case 2://预定
-		   		printf("please input date of check in,like  20160420 \n >>");
-				scanf("%d", &date_check_in);
-				printf("please input date of check out,like 20160712 \n >>");
-				scanf("%d", &date_check_out);
-				find_free_room(room_head, date_check_in, date_check_out, &bool_judge);//自动打印可用列表
-				printf("enter free room id:");
-				scanf("%d", &id);
-				printf("please input Mr guest 's name:");
-				gets(guest_name);
-				hotel_reserve(user_head,id, guest_name, date_check_in, date_check_out, &result);
 
-				if (result == 1){
-					printf("success!\n");
-				}
-				else{
-					printf("sorry,fail,you can find technique help\n");
-					printf("press any key to continue\n");
-					getchar();
-				}
+		case 1://(1)入住 
+			printf("please input date of check in,like  20160420 \n >>");
+			scanf("%d", &date_check_in);
+			printf("please input date of check out,like 20160712 \n >>");
+			scanf("%d", &date_check_out);
+			//查询
+			find_free_room(room_head, date_check_in, date_check_out, &bool_judge);//自动打印可用列表
+			//用id预定
+			printf("room id:");
+			scanf("%d", &id);
+			continue;
+		case 2://预定
+			printf("please input date of check in,like  20160420 \n >>");
+			scanf("%d", &date_check_in);
+			printf("please input date of check out,like 20160712 \n >>");
+			scanf("%d", &date_check_out);
+			find_free_room(room_head, date_check_in, date_check_out, &bool_judge);//自动打印可用列表
+			printf("enter free room id:");
+			scanf("%d", &id);
+			printf("please input Mr guest 's name:");
+			gets(guest_name);
+			hotel_reserve(room_head, guest_name, id, date_check_in, date_check_out, &result);
+
+			if (result == 1){
+				printf("success!\n");
+			}
+			else{
+				printf("sorry,fail,you can find technique help\n");
+				printf("press any key to continue\n");
+				getchar();
+			}
+			system("cls");
+			i = 1;
+			continue;
+		case 3://房间信息编辑
+			while (i){
 				system("cls");
-				i = 1;
-				continue;
-			case 3://房间信息编辑
-				while (i){
-					system("cls");
-					printf("edit (0)name_guest (1)state (2)price (3)time of start or time of end (other) exit\n");
-					printf("chose :");
-					result = 0;
-					scanf("%d", &n);
-					switch (n){
-					case 0:
-						printf("please input room id:");
-						scanf("%d", &id);
-						printf("enter new guest name:");
-						gets(guest_name);
-						edit_room(room_head, n, id, guest_name, 0, 0, 0, 0, &result);
-						if (result == 1){
-							printf("success , new name is %s \n", guest_name);
-							printf("you may need (0)exit edit menu (1) continue edit chose:");
-							scanf("%d", &chose);
-							if (chose == 1){
-								break;
-							}
-							else{
-								i = 0;
-								break;
-							}
+				printf("edit (0)name_guest (1)state (2)price (3)time of start or time of end (other) exit\n");
+				printf("chose :");
+				result = 0;
+				scanf("%d", &n);
+				switch (n){
+				case 0:
+					printf("please input room id:");
+					scanf("%d", &id);
+					printf("enter new guest name:");
+					gets(guest_name);
+					edit_room(room_head, n, id, guest_name, 0, 0, 0, 0, &result);
+					if (result == 1){
+						printf("success , new name is %s \n", guest_name);
+						printf("you may need (0)exit edit menu (1) continue edit chose:");
+						scanf("%d", &chose);
+						if (chose == 1){
+							break;
 						}
 						else{
-							printf("err edit fail\n");
-							printf("press any key to continue\n");
-							getchar();
-							break;
-						}
-					case 1:
-						printf("please input room id:");
-						scanf("%d", &id);
-						find_room_by_id(id, room_head, &room_edit, &result);
-						if (result != 1){
-							printf("room of this id do not find\n");
-							printf("press any key to continue\n");
-							break;
-						}
-						printf("guest is %s ,enter new name:", room_edit->name_guest);
-						scanf("%d", &temp_use_edit);
-						edit_room(room_head, n, id, NULL, NULL, temp_use_edit, 0, 0, &result);
-						if (result == 1){
-							printf("success , new price is %d \n", temp_use_edit);
-							printf("you may need (0)exit edit menu (1) continue edit chose:");
-							scanf("%d", &chose);
-							if (chose == 1){
-								break;
-							}
-							else{
-								i = 0;
-								break;
-							}
-						}
-						else{
-							printf("err edit fail\n");
-							printf("press any key to continue\n");
-							getchar();
-							break;
-						}
-					case 2:
-						printf("please input room id:");
-						scanf("%d", &id);
-						find_room_by_id(id, room_head, &room_edit, &result);
-						if (result != 1){
-							printf("room of this id do not find\n");
-							printf("press any key to continue\n");
-							getchar();
-							break;
-						}
-						printf("now price is %d, enter new price:", room_edit->price);
-						scanf("%d", &temp_use_edit);
-						edit_room(room_head, n, id, NULL, NULL, temp_use_edit, 0, 0, &result);
-						if (result == 1){
-							printf("success , new price is %d \n", temp_use_edit);
-							printf("you may need (0)exit edit menu (1) continue edit chose:");
-							scanf("%d", &chose);
-							if (chose == 1){
-								break;
-							}
-							else{
-								i = 0;
-								break;
-							}
-						}
-						else{
-							printf("err edit fail\n");
-							printf("press any key to continue\n");
-							getchar();
-							break;
-						}
-					case 3:
-						printf("please input room id:");
-						scanf("%d", &id);
-						find_room_by_id(id, room_head, &room_edit, &result);
-						if (result != 1){
-							printf("room of this id do not find\n");
-							printf("press any key to continue\n");
-							getchar();
-							break;
-						}
-						printf("Mr guest start at %d, end at %d ,enter two time update it:first >>", room_edit->t_start, room_edit->t_end);
-						scanf("%d", &first_time);
-						printf("second>>");
-						scanf("%d", &second_time);
-						if (second_time < first_time){
-							printf("err :first time < second time\n");
-							printf("press any key to continue\n");
-							getchar();
-							break;
-						}
-						edit_room(room_head, n, id, NULL, NULL, temp_use_edit, 0, 0, &result);
-						if (result == 1){
-							printf("success , new price is %d \n", temp_use_edit);
-							printf("you may need (0)exit edit menu (1) continue edit chose:");
-							scanf("%d", &chose);
-							if (chose == 1){
-								break;
-							}
-							else{
-								i = 0;
-								break;
-							}
-						}
-						else{
-							printf("err edit fail\n");
-							printf("press any key to continue\n");
-							getchar();
-							break;
-						}
-					case 4://add room
-						i = 1;
-						while (i){
-							room_edit = room_head;
-							printf("-------id------state------");
-							while (room_edit != NULL){
-								printf("--------%d---------%s-----\n", room_edit->id, state_to_string[room_edit->state]);
-							}
-							printf("please set a id , do not same as one:");
-							scanf("%d", &id);
-							printf("how many much a night?");
-							scanf("%d", &temp_sum);
-							if (temp_sum <= 0){
-								printf("price incorrect \n");
-								printf("press any key to continue\n");
-								getchar();
-								continue;
-							}
-							//id校验
-							find_room_by_id(id, room_head, &room_edit, &result);
-							if (result == 1){
-								printf("id as the same \n");
-								printf("press any key to continue\n");
-								getchar();
-								continue;
-							}
-							room_add(room_head, id, temp_sum, &result);
 							i = 0;
 							break;
 						}
-					case 5:
-						printf("please set a id , do not same as one:");
-						scanf("%d", &id);
-						find_room_by_id(id, room_head, &room_edit, &result);
-						if (result != 1){
-							printf("find room fail\n");
-							printf("press any key to continue\n");
-							getchar();
-							break;
-						}
-						free_reserve(room_edit, &result);
-						if (result != 1){
-							printf("del room reserve  fail\n");
-							printf("press any key to continue\n");
-							getchar();
-							break;
-						}
-						if (room_edit != NULL){
-							free(room_edit);
-							room_edit = NULL;
-						}
+					}
+					else{
+						printf("err edit fail\n");
+						printf("press any key to continue\n");
+						getchar();
 						break;
 					}
-			default:
-				system("cls");
-				printf("input err\n");
-				printf("press any key to continue\n");
-				getchar();
-				continue;
+				case 1:
+					printf("please input room id:");
+					scanf("%d", &id);
+					find_room_by_id(id, room_head, &room_edit, &result);
+					if (result != 1){
+						printf("room of this id do not find\n");
+						printf("press any key to continue\n");
+						break;
+					}
+					printf("guest is %s ,enter new name:", room_edit->name_guest);
+					scanf("%d", &temp_use_edit);
+					edit_room(room_head, n, id,"null", 0, temp_use_edit, 0, 0, &result);
+					if (result == 1){
+						printf("success , new price is %d \n", temp_use_edit);
+						printf("you may need (0)exit edit menu (1) continue edit chose:");
+						scanf("%d", &chose);
+						if (chose == 1){
+							break;
+						}
+						else{
+							i = 0;
+							break;
+						}
+					}
+					else{
+						printf("err edit fail\n");
+						printf("press any key to continue\n");
+						getchar();
+						break;
+					}
+				case 2:
+					printf("please input room id:");
+					scanf("%d", &id);
+					find_room_by_id(id, room_head, &room_edit, &result);
+					if (result != 1){
+						printf("room of this id do not find\n");
+						printf("press any key to continue\n");
+						getchar();
+						break;
+					}
+					printf("now price is %d, enter new price:", room_edit->price);
+					scanf("%d", &temp_use_edit);
+					edit_room(room_head, n, id, "null", 0, temp_use_edit, 0, 0, &result);
+					if (result == 1){
+						printf("success , new price is %d \n", temp_use_edit);
+						printf("you may need (0)exit edit menu (1) continue edit chose:");
+						scanf("%d", &chose);
+						if (chose == 1){
+							break;
+						}
+						else{
+							i = 0;
+							break;
+						}
+					}
+					else{
+						printf("err edit fail\n");
+						printf("press any key to continue\n");
+						getchar();
+						break;
+					}
+				case 3:
+					printf("please input room id:");
+					scanf("%d", &id);
+					find_room_by_id(id, room_head, &room_edit, &result);
+					if (result != 1){
+						printf("room of this id do not find\n");
+						printf("press any key to continue\n");
+						getchar();
+						break;
+					}
+					printf("Mr guest start at %d, end at %d ,enter two time update it:first >>", room_edit->t_start, room_edit->t_end);
+					scanf("%d", &first_time);
+					printf("second>>");
+					scanf("%d", &second_time);
+					if (second_time < first_time){
+						printf("err :first time < second time\n");
+						printf("press any key to continue\n");
+						getchar();
+						break;
+					}
+					edit_room(room_head, n, id, "null", 0, temp_use_edit, 0, 0, &result);
+					if (result == 1){
+						printf("success , new price is %d \n", temp_use_edit);
+						printf("you may need (0)exit edit menu (1) continue edit chose:");
+						scanf("%d", &chose);
+						if (chose == 1){
+							break;
+						}
+						else{
+							i = 0;
+							break;
+						}
+					}
+					else{
+						printf("err edit fail\n");
+						printf("press any key to continue\n");
+						getchar();
+						break;
+					}
+				case 4://add room
+					i = 1;
+					while (i){
+						room_edit = room_head;
+						printf("-------id------state------");
+						while (room_edit != NULL){
+							printf("--------%d---------%s-----\n", room_edit->id, state_to_string[room_edit->state]);
+						}
+						printf("please set a id , do not same as one:");
+						scanf("%d", &id);
+						printf("how many much a night?");
+						scanf("%d", &temp_sum);
+						if (temp_sum <= 0){
+							printf("price incorrect \n");
+							printf("press any key to continue\n");
+							getchar();
+							continue;
+						}
+						//id校验
+						find_room_by_id(id, room_head, &room_edit, &result);
+						if (result == 1){
+							printf("id as the same \n");
+							printf("press any key to continue\n");
+							getchar();
+							continue;
+						}
+						room_add(room_head, id, temp_sum, &result);
+						i = 0;
+						break;
+					}
+				case 5:
+					printf("please set a id , do not same as one:");
+					scanf("%d", &id);
+					find_room_by_id(id, room_head, &room_edit, &result);
+					if (result != 1){
+						printf("find room fail\n");
+						printf("press any key to continue\n");
+						getchar();
+						break;
+					}
+					free_reserve(room_edit, &result);
+					if (result != 1){
+						printf("del room reserve  fail\n");
+						printf("press any key to continue\n");
+						getchar();
+						break;
+					}
+					if (room_edit != NULL){
+						free(room_edit);
+						room_edit = NULL;
+					}
+					break;
+				}
+		default:
+			system("cls");
+			printf("input err\n");
+			printf("press any key to continue\n");
+			getchar();
+			continue;
+			}
 		}
+		return 0;
 	}
-	return 0;
 }

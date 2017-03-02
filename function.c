@@ -117,6 +117,7 @@ int user_register(user *head_in, char *userName, char *passWord, int *bool_retur
 	int ret = 0;
 	int result = 0;
 	user *start = head_in;
+	user *p = NULL;
 	//校验
 	if ( head_in == NULL){
 		ret = -1;
@@ -124,7 +125,7 @@ int user_register(user *head_in, char *userName, char *passWord, int *bool_retur
 		return ret;
 	}
 	//查询用户名称是否存在
-	/*ret = */find_string_in_user(start, userName, &result);
+	find_userName_in_user(start, &p, userName, &result);
 	if (result == 0){
 		*bool_return = 1;
 		return ret;
@@ -508,14 +509,14 @@ int hotel_reserve(room *source,const char *name, int room_id_sn, int t_start, in
 		*result = 0;
 		return -2;
 	}
-	reserve_addback(p->head_book, name, t_start, t_end, result);
+	reserve_addback(&(p->head_book), name, t_start, t_end, result);
 	*result = 1;
 	return 0;
 }
 //完成，查询房间预订情况
 int check_room_reserve(const room *info, const int t_start, const int t_end, int *result)
 {
-	book_room *p = info->head_book; 
+	room_book *p = info->head_book; 
 	int count = 0;
 	//校验
 	if (info == NULL){
