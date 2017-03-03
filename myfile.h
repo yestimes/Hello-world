@@ -27,7 +27,7 @@ int user_addback(user *head, char *user_str, char *passwd_str);
 int user_register(user *head_in, char *userName, char *passWord, int *bool_return);
 int get_KEY_form_buf(char *key_str, char *value_str, char *key_value_str, int  *value_buf_length);
 int dislodge_blank_from_str(char *source_str, char *output_buffer);
-int load_userdata(struct user_inf **r);
+int load_userdata(struct user_inf **r, int *result);
 int load_roomdata(room **out_linkList, int *result);
 int check_user_login(char *userName, char *passWord, int *state, user *user_infor, user **userid_return);
 int find_room_by_id(int id, room *head_info, room **out_ptr, int *result);
@@ -40,4 +40,6 @@ int free_user(const user *start, int *result);
 int free_reserve(const room *head_info, int *result);
 int free_all_room(const room *head_info, int *result);
 int room_add(const room *source, int id, int price, int *result);
-
+int sort_room_by_id(const room *start, int *result);
+int set_room_head(const room **source, int *result);
+int exit_manger_system(const user *p_str, const room *r_str, int *result);

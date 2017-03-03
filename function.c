@@ -12,7 +12,7 @@ int find_userName_in_user(user *source, user **return_user, char *aim_str, int *
 	//校验
 	if (source == NULL){
 		ret = -1;
-		printf(" user information is NULL \n");
+		printf("find_userName_in_user: find user information is NULL \n");
 		*bool_out = 0;
 		return ret;
 	}
@@ -24,11 +24,13 @@ int find_userName_in_user(user *source, user **return_user, char *aim_str, int *
 	}
 	while (p != NULL){
 		if ( strcmp(p->name,aim_str) == 0){
+			*return_user = p;
 			*bool_out = 1;
 			return 0;
 		}
 		p = p->next;
 	}
+	
 	*bool_out = 0;
 	return ret;
 }
@@ -38,9 +40,9 @@ int check_passWord_in_user(user *source, char *aim_str, int *bool_out)
 	int ret = 0;
 	user *p = source;
 	//校验
-	if (source == NULL){
+	if (p == NULL){
 		ret = -1;
-		printf(" user information is NULL \n");
+		printf("line 44 function check_passWord_in_user user information is NULL \n");
 		*bool_out = 0;
 		return ret;
 	}
@@ -54,13 +56,7 @@ int check_passWord_in_user(user *source, char *aim_str, int *bool_out)
 		*bool_out = 1;
 		return 0;
 	}
-	/*while (p != NULL){
-		if (strcmp(p->passwd, aim_str) == 0){
-		*bool_out = 1;
-		return 0;
-		}
-		p = p->next;
-		}*/
+	
 	return ret;
 }
 //完成，创建用户信息头
@@ -121,23 +117,54 @@ int user_register(user *head_in, char *userName, char *passWord, int *bool_retur
 	//校验
 	if ( head_in == NULL){
 		ret = -1;
-		printf("err:link_list of user information is NULL \n");
+		printf("user_register err:link_list of user information is NULL \n");
 		return ret;
 	}
 	//查询用户名称是否存在
 	find_userName_in_user(start, &p, userName, &result);
-	if (result == 0){
-		*bool_return = 1;
+	if (result == 1){
+		*bool_return = 0;
 		return ret;
 	}
 	ret = user_addback(start, userName, passWord);
-	if (ret == 0){
+	if (ret != 0){
+		printf("line 132\n");
 		*bool_return = 0;
 		return ret;
 	}
 	*bool_return = 1;
-	return -1;
+	return 0;
 
+}
+//完成，检查用户名，密码(遍历链表）
+int check_user_login(char *userName, char *passWord, int *state, user *user_infor, user **userid_return)
+{
+	int result = 0;
+	user *p = NULL;
+	if (userName == NULL || passWord == NULL || user_infor == NULL || userid_return == NULL){
+		
+		printf("err check_user_login:参数\n");
+		return -1;
+	}
+	find_userName_in_user(user_infor, &p, userName, &result);
+
+	if (result != 1){
+		*userid_return = NULL;
+		*state = -1;
+		return 0;
+	}
+	if (p == NULL){
+		printf("line 155\n");
+	}
+	check_passWord_in_user(p, passWord, &result);
+	if (result != 1){
+		*userid_return = NULL;
+		*state = -2;
+		return 0;
+	}
+	*userid_return = p;
+	*state = 1;
+	return 0;
 }
 									//文件
 //完成，从文件获取关键字
@@ -211,7 +238,7 @@ int dislodge_blank_from_str(char *source_str, char *output_buffer)
 	return 0;
 }
 //没有完成，从文件载入用户数据
-int load_userdata(struct user_inf **r)
+int load_userdata(struct user_inf **r, int *result_back)
 {
 	int ret = 0;
 	int result = 0;
@@ -227,7 +254,14 @@ int load_userdata(struct user_inf **r)
 	int count = 0;
 	//载入文件数据 
 	FILE *fp = NULL;
-	fp = fopen("E:\\project_doucment\\data\\user.txt","r+");
+	fp = fopen("..\\data\\user.txt","r+");
+	if (fp == NULL){
+		printf("err:open file fail\n");
+		printf("press any key to continue\n");
+		getchar();
+		*result_back = 0;
+		return -1;
+	}
 	//读取完文件才行 
 	while( !feof(fp)) {
 		//校验
@@ -295,31 +329,42 @@ int load_userdata(struct user_inf **r)
 int load_roomdata(room **out_linkList, int *result)
 {
 	FILE *fp = NULL;
-	fp = fopen("E:\\project_doucment\\data","r+");
-	if (fp = NULL){
+	fp = fopen("..\\data","r+");
+	if (fp == NULL){
 		printf("err:open files fail\n");
-		return -1;
+		*result = 0;
+		return 0;
 	}
+	fclose(fp);
 	return 0;
 }
-//完成，检查用户名，密码(遍历链表）
-int check_user_login(char *userName, char *passWord, int *state, user *user_infor, user **userid_return)
+
+									//房间
+//创建房间信息头
+int set_room_head(const room **source, int *result)
 {
-	int result = 0;
-	user *p = NULL;
-	find_userName_in_user(user_infor, &p, userName, &result);
-	if (result != 1){
-		*userid_return = NULL;
-		*state = -1;
-		return 0;
+	//校验
+	if (source == NULL){
+		printf("err:room head 's aderss is null\n");
+		printf("press any key to continue\n");
+		getchar();
+		*result = 0;
+		return -1;
 	}
-	check_passWord_in_user(p, passWord, &result);
-	if (result != 1){
-		*userid_return = NULL;
-		*state = -2;
-		return 0;
-	}
-	*state = 1;
+	room *p = NULL;
+	p = (room *)malloc(sizeof(room));
+	*source = p;
+	//数据初始化
+	p->id = 1;
+	strcpy(p->name_guest, "null");
+	p->head_book = NULL;
+	p->next = NULL;
+	p->price = 0;
+	p->state = 2;
+	p->t_start = 0;
+	p->t_end = 1;
+
+	*result = 1;
 	return 0;
 }
 /*通过id寻找房间信息地址(遍历链表）*/
@@ -338,7 +383,7 @@ int find_room_by_id(int id, room *head_info, room **out_ptr, int *result)
 		printf("err:room id is NULL\n");
 		return ret;
 	}
-	while ( p != NULL){
+	while (p != NULL){
 		if (key == p->id){
 			*out_ptr = p;
 			*result = 1;
@@ -350,8 +395,6 @@ int find_room_by_id(int id, room *head_info, room **out_ptr, int *result)
 	*result = 1;
 	return ret;
 }
-
-									//房间
 //通过id删除房间(遍历链表）
 int delete_room_by_id(const int id, const room *head_info, int *result)
 {
@@ -400,9 +443,10 @@ int find_free_room(room *h_start, int f_date, int s_date, int *list_result)
 		return -1;
 	}
 	printf("--id-----state------price-----\n");
-	printf(" your reserch %5d to %5d ", p->t_start, p->t_end);
+	printf(" your reserch %5d to %5d \n", p->t_start, p->t_end);
 	while (p != NULL){
 		check_room_reserve(head, f_date, s_date, &outcome);
+		printf("err:outcome == %d \n",outcome);
 		if (outcome == 1 ){
 			printf("%5d %s %d\n",p->id,state_to_string[p->state],p->price);
 			print_times++;
@@ -443,6 +487,29 @@ int room_add(const room *source, int id, int price, int *result)
 }
 									//预订
 //创建预订信息头
+int set_reserve_head(const room *source, int *result)
+{
+	//check pointer is null or not
+	if (source == NULL || result == 0){
+		printf("err 494:trans room information == NULL\n");
+		printf("press any key to continue\n");
+		getchar();
+		*result = 0;
+		return -1;
+	}
+	room *p = source;
+	room_book *ptr = NULL;
+	p->head_book = (room_book *)malloc(sizeof(room_book));
+	//初始化数据
+	ptr = p->head_book;
+	strcpy(p->head_book->name, "null");
+	ptr->next = NULL;
+	ptr->t_start = 20161231;
+	ptr->t_end = 20170103;
+	*result = 1;
+	return 0;
+}
+//预定信息添加
 int reserve_addback(room_book **head_book_ptr, const char *name, const int t_start, const int t_end, int *result)
 {
 	room_book *p = *head_book_ptr;
@@ -451,7 +518,10 @@ int reserve_addback(room_book **head_book_ptr, const char *name, const int t_sta
 	int outcome = 0;
 	//校验
 	if (p == NULL){
-		printf("err:room_book information == NULL\n");
+		printf("line 520 err:room_book information == NULL\n");
+		printf("press any key to continue\n");
+		getchar();
+		*result = 0;
 		return -1;
 	}
 	while (p != NULL){
@@ -487,7 +557,9 @@ int reserve_addback(room_book **head_book_ptr, const char *name, const int t_sta
 	}
 	if (outcome > 1){
 		*result = 0;
-			printf("function call err: reserve_addback \n");
+		printf("function call err: reserve_addback \n");
+		printf("press any key to continue\n");
+		getchar();
 		return -1;
 	}
 	*result = 1;
@@ -501,11 +573,15 @@ int hotel_reserve(room *source,const char *name, int room_id_sn, int t_start, in
 	//校验
 	if (source == NULL){
 		printf("err:source of room == NULL\n");
+		printf("press any key to continue\n");
+		getchar();
 		return -1;
 	}
 	find_room_by_id(room_id_sn, source, &p, &outcome);
 	if (outcome == 0){
 		printf("err:do not find room by id\n");
+		printf("press any key to continue\n");
+		getchar();
 		*result = 0;
 		return -2;
 	}
@@ -521,10 +597,16 @@ int check_room_reserve(const room *info, const int t_start, const int t_end, int
 	//校验
 	if (info == NULL){
 		printf("err:room *information == NULL\n");
+		printf("press any key to continue\n");
+		getchar();
+		*result = 0;
 		return -1;
 	}
 	if (p == NULL){
 		printf("err:room book == NULL\n");
+		printf("press any key to continue\n");
+		getchar();
+		*result = 0;
 		return -1;
 	}
 	while (p->next != NULL){
@@ -678,7 +760,7 @@ int free_all_room(const room *head_info, int *result)
 	*result = 1;
 	return 0;
 }
-//客房按id排序
+//客房按id排序(sort by bubble)
 int sort_room_by_id(const room *start, int *result)
 {
 	room temp;
@@ -703,6 +785,25 @@ int sort_room_by_id(const room *start, int *result)
 			r = r->next;
 		}
 		p = p->next;
+	}
+	*result = 1;
+	return 0;
+}
+//结束程序
+int exit_manger_system(const user *p_str, const room *r_str, int *result)
+
+{
+	free_user(p_str, result);
+	if (*result != 1){
+		printf("free user err 请关闭后重启计算机，避免内存泄漏\n");
+		*result = 1;
+		return -1;
+	}
+	free_all_room(r_str, result);
+	if (*result != 1){
+		printf("free room err 请关闭后重启计算机，避免内存泄漏\n");
+		*result = 1;
+		return -1;
 	}
 	*result = 1;
 	return 0;
